@@ -237,6 +237,9 @@ body{
 .grid-3{
   grid-template-columns:repeat(3, minmax(0,1fr));
 }
+.grid-4{
+  grid-template-columns:repeat(4, minmax(0,1fr));
+}
 
 /* price card + chart placeholder */
 .card{
@@ -1064,6 +1067,23 @@ input, textarea{
 
 .modal-content::-webkit-scrollbar-thumb:hover{
   background:var(--role-primary);
+}
+
+/* Marketplace Filter Buttons */
+.filter-btn{
+  transition:all 0.2s ease;
+}
+
+.filter-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.filter-btn.active{
+  background:var(--primary) !important;
+  color:white !important;
+  border-color:var(--primary) !important;
+  box-shadow:0 4px 12px rgba(47,142,68,0.3);
 }
 
 /* Links and text in dark mode */

@@ -22,6 +22,7 @@
     setActiveNav();
     attachChatbot();
     attachThemeToggle();
+    setupRoleBasedUI();
     runPageScripts();
     // smooth anchor
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
@@ -31,6 +32,94 @@
       });
     });
   }
+  
+  // Role-based UI setup
+  function setupRoleBasedUI(){
+    const userRole = localStorage.getItem('userRole') || 'farmer';
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    // Show landing page if not logged in
+    const landingContent = document.getElementById('landing-content');
+    const farmerContent = document.getElementById('farmer-content');
+    const customerContent = document.getElementById('customer-content');
+    
+    if(!isLoggedIn){
+      // Show landing page, hide role-specific content
+      if(landingContent) landingContent.style.display = 'block';
+      if(farmerContent) farmerContent.style.display = 'none';
+      if(customerContent) customerContent.style.display = 'none';
+      // Show default navigation
+      return;
+    }
+    
+    // Hide landing page, show role-specific content
+    if(landingContent) landingContent.style.display = 'none';
+    
+    // Update navigation based on role
+    updateNavigation(userRole, isLoggedIn);
+    
+    // Show/hide content based on role
+    if(farmerContent){
+      farmerContent.style.display = userRole === 'farmer' ? 'block' : 'none';
+    }
+    if(customerContent){
+      customerContent.style.display = userRole === 'customer' ? 'block' : 'none';
+    }
+  }
+  
+  function updateNavigation(userRole, isLoggedIn){
+    const nav = document.querySelector('.nav');
+    if(!nav) return;
+    
+    // Store theme toggle
+    const themeToggle = nav.querySelector('#theme-toggle');
+    const toggleHTML = themeToggle ? themeToggle.outerHTML : '';
+    
+    // Clear all nav items
+    nav.innerHTML = '';
+    
+    if(userRole === 'farmer'){
+      // Farmer navigation
+      const links = [
+        '<a href="index.html">Home</a>',
+        '<a href="marketplace.html">Marketplace</a>',
+        '<a href="community.html">Community</a>',
+        '<a href="learning.html">Learning Hub</a>',
+        '<a href="collab.html">Collab</a>',
+        '<a href="mandi.html">Mandi Locator</a>',
+        toggleHTML,
+        isLoggedIn ? '<a href="#" onclick="logout()" style="background:transparent;border:1px solid rgba(47,142,68,0.12);padding:8px 12px;border-radius:8px;color:var(--primary)">Logout</a>' : '<a href="auth.html" style="background:transparent;border:1px solid rgba(47,142,68,0.12);padding:8px 12px;border-radius:8px;color:var(--primary)">Sign in</a>'
+      ];
+      links.forEach(html => nav.insertAdjacentHTML('beforeend', html));
+    } else {
+      // Customer navigation
+      const links = [
+        '<a href="index.html">Home</a>',
+        '<a href="customer-shop.html">Shop</a>',
+        '<a href="orders.html">My Orders</a>',
+        '<a href="cart.html">Cart <span id="cart-count" style="background:#2563eb;color:white;border-radius:10px;padding:2px 6px;font-size:11px;margin-left:4px">0</span></a>',
+        '<a href="wishlist.html">Wishlist</a>',
+        toggleHTML,
+        isLoggedIn ? '<a href="#" onclick="logout()" style="background:transparent;border:1px solid rgba(37,99,235,0.12);padding:8px 12px;border-radius:8px;color:#2563eb">Logout</a>' : '<a href="auth.html" style="background:transparent;border:1px solid rgba(37,99,235,0.12);padding:8px 12px;border-radius:8px;color:#2563eb">Sign in</a>'
+      ];
+      links.forEach(html => nav.insertAdjacentHTML('beforeend', html));
+    }
+    
+    // Re-attach theme toggle
+    if(themeToggle){
+      attachThemeToggle();
+    }
+    
+    setActiveNav();
+  }
+  
+  // Logout function
+  window.logout = function(){
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    location.href = 'index.html';
+  };
 
   // Attach theme toggle behavior
   function attachThemeToggle(){
@@ -73,7 +162,7 @@
     chatSend && chatSend.addEventListener('click', sendMessage);
     chatInput && chatInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendMessage(); });
 
-    // preload bot greeting
+    // Pre Message 
     appendBot("Namaste! I am Arnak, your AI farming assistant. How can I help you today?");
     function appendBot(text){
       if(!chatBody) return;
@@ -196,73 +285,161 @@
   }
 
   /* Marketplace */
-  function renderMarketplace(){
+  function renderMarketplace(filter='all'){
     const grid = document.getElementById('market-grid');
     if(!grid) return;
     grid.innerHTML = '';
-    window.AGRI.MARKETPLACE_LISTINGS.forEach(item=>{
+    
+    let items = window.AGRI.MARKETPLACE_LISTINGS;
+    if(filter !== 'all'){
+      items = items.filter(item => item.category === filter);
+    }
+    
+    if(items.length === 0){
+      grid.innerHTML = '<div class="card" style="text-align:center;padding:48px;grid-column:1/-1"><div style="font-size:48px;margin-bottom:16px">🔍</div><h3 style="color:var(--text)">No items found</h3><p style="color:var(--muted)">Try a different filter</p></div>';
+      return;
+    }
+    
+    items.forEach(item=>{
       const card = document.createElement('div'); card.className='card';
+      const isService = item.category === 'services';
+      const isRent = item.isRent === true;
+      const actionText = isRent ? 'Rent Now' : (isService ? 'Book Service' : 'Buy Now');
+      
       card.innerHTML = `
         <div style="position:relative;overflow:hidden;border-radius:10px;height:160px">
           <img src="${item.image}" style="width:100%;height:100%;object-fit:cover" />
-          <div style="position:absolute;right:10px;top:10px;background:rgba(255,255,255,0.9);padding:6px 8px;border-radius:8px;font-weight:700">${item.grade}</div>
+          <div style="position:absolute;right:10px;top:10px;background:rgba(255,255,255,0.9);padding:6px 8px;border-radius:8px;font-weight:700;font-size:12px">${item.grade}</div>
+          ${isRent ? '<div style="position:absolute;left:10px;top:10px;background:rgba(47,142,68,0.9);color:white;padding:4px 8px;border-radius:6px;font-weight:700;font-size:11px">🔧 RENT</div>' : ''}
         </div>
         <div style="padding-top:12px">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div>
-              <div style="font-weight:800">${item.crop}</div>
-              <div style="font-size:13px;color:var(--muted)">${item.location}</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:900;color:var(--primary)">₹${item.price}</div>
-              <div style="font-size:13px;color:var(--muted)">${item.quantity} ${item.unit}</div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+            <div style="flex:1">
+              <div style="font-weight:800;font-size:16px;color:var(--text)">${item.crop}</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:4px">📍 ${item.location}</div>
+              ${item.farmer ? `<div style="font-size:12px;color:var(--muted);margin-top:2px">👤 ${item.farmer}</div>` : ''}
             </div>
           </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-weight:900;color:var(--primary);font-size:20px">₹${item.price}</div>
+              <div style="font-size:12px;color:var(--muted)">${isRent ? 'per day' : (isService ? 'per service' : 'per ' + item.unit)}</div>
+            </div>
+            ${!isRent && !isService ? `<div style="font-size:12px;color:var(--muted)">Available: ${item.quantity} ${item.unit}</div>` : ''}
+          </div>
           <div style="margin-top:10px;display:flex;gap:8px">
-            <button class="btn" style="background:#f3f4f6;border-radius:8px;border:1px solid rgba(15,23,42,0.04)">View</button>
-            <button class="btn" style="background:var(--primary);color:white;border-radius:8px">Buy Now</button>
+            <button class="btn" onclick="viewDetails(${item.id})" style="flex:1;background:var(--bg);border-radius:8px;border:1px solid var(--border);color:var(--text);padding:10px">View</button>
+            <button class="btn" onclick="purchaseItem(${item.id}, ${isRent})" style="flex:1;background:var(--primary);color:white;border-radius:8px;padding:10px;font-weight:600">${actionText}</button>
           </div>
         </div>
       `;
       grid.appendChild(card);
     });
   }
+  
+  function viewDetails(id){
+    const item = window.AGRI.MARKETPLACE_LISTINGS.find(i=>i.id===id);
+    if(item){
+      alert(`Details for ${item.crop}\nPrice: ₹${item.price}/${item.unit}\nLocation: ${item.location}\n${item.farmer ? 'Farmer: ' + item.farmer : ''}`);
+    }
+  }
+  
+  function purchaseItem(id, isRent){
+    const item = window.AGRI.MARKETPLACE_LISTINGS.find(i=>i.id===id);
+    if(item){
+      if(isRent){
+        alert(`Rental booking for ${item.crop}\nPrice: ₹${item.price}/day\nContact the service provider to confirm dates.`);
+      } else {
+        alert(`Purchase ${item.crop}\nPrice: ₹${item.price}\nProceeding to checkout...`);
+      }
+    }
+  }
 
   function attachSearchMarketplace(){
     const form = document.getElementById('market-search-form');
     if(!form) return;
+    
+    // Filter buttons
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    let currentFilter = 'all';
+    
+    filterButtons.forEach(btn=>{
+      btn.addEventListener('click', function(){
+        filterButtons.forEach(b=>{
+          b.classList.remove('active');
+          b.style.background = 'var(--card)';
+          b.style.color = 'var(--text)';
+        });
+        this.classList.add('active');
+        this.style.background = 'var(--primary)';
+        this.style.color = 'white';
+        currentFilter = this.dataset.filter;
+        renderMarketplace(currentFilter);
+      });
+    });
+    
     form.addEventListener('submit', function(e){
       e.preventDefault();
       const q = (document.getElementById('market-search')||{}).value.toLowerCase();
-      const grid = document.getElementById('market-grid');
-      grid.innerHTML = '';
-      const list = window.AGRI.MARKETPLACE_LISTINGS.filter(item=> item.crop.toLowerCase().includes(q) || item.location.toLowerCase().includes(q));
-      (list.length?list:window.AGRI.MARKETPLACE_LISTINGS).forEach(item=>{
-        const card = document.createElement('div'); card.className='card';
-        card.innerHTML = `
-          <div style="position:relative;overflow:hidden;border-radius:10px;height:160px">
-            <img src="${item.image}" style="width:100%;height:100%;object-fit:cover" />
-            <div style="position:absolute;right:10px;top:10px;background:rgba(255,255,255,0.9);padding:6px 8px;border-radius:8px;font-weight:700">${item.grade}</div>
-          </div>
-          <div style="padding-top:12px">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start">
-              <div>
-                <div style="font-weight:800">${item.crop}</div>
-                <div style="font-size:13px;color:var(--muted)">${item.location}</div>
-              </div>
-              <div style="text-align:right">
-                <div style="font-weight:900;color:var(--primary)">₹${item.price}</div>
-                <div style="font-size:13px;color:var(--muted)">${item.quantity} ${item.unit}</div>
-              </div>
+      if(!q){
+        renderMarketplace(currentFilter);
+        return;
+      }
+      
+      let items = window.AGRI.MARKETPLACE_LISTINGS;
+      if(currentFilter !== 'all'){
+        items = items.filter(item => item.category === currentFilter);
+      }
+      
+      const filtered = items.filter(item=> 
+        item.crop.toLowerCase().includes(q) || 
+        item.location.toLowerCase().includes(q) ||
+        (item.farmer && item.farmer.toLowerCase().includes(q))
+      );
+      
+      renderMarketplaceWithItems(filtered.length ? filtered : items);
+    });
+  }
+  
+  function renderMarketplaceWithItems(items){
+    const grid = document.getElementById('market-grid');
+    if(!grid) return;
+    grid.innerHTML = '';
+    
+    items.forEach(item=>{
+      const card = document.createElement('div'); card.className='card';
+      const isService = item.category === 'services';
+      const isRent = item.isRent === true;
+      const actionText = isRent ? 'Rent Now' : (isService ? 'Book Service' : 'Buy Now');
+      
+      card.innerHTML = `
+        <div style="position:relative;overflow:hidden;border-radius:10px;height:160px">
+          <img src="${item.image}" style="width:100%;height:100%;object-fit:cover" />
+          <div style="position:absolute;right:10px;top:10px;background:rgba(255,255,255,0.9);padding:6px 8px;border-radius:8px;font-weight:700;font-size:12px">${item.grade}</div>
+          ${isRent ? '<div style="position:absolute;left:10px;top:10px;background:rgba(47,142,68,0.9);color:white;padding:4px 8px;border-radius:6px;font-weight:700;font-size:11px">🔧 RENT</div>' : ''}
+        </div>
+        <div style="padding-top:12px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+            <div style="flex:1">
+              <div style="font-weight:800;font-size:16px;color:var(--text)">${item.crop}</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:4px">📍 ${item.location}</div>
+              ${item.farmer ? `<div style="font-size:12px;color:var(--muted);margin-top:2px">👤 ${item.farmer}</div>` : ''}
             </div>
-            <div style="margin-top:10px;display:flex;gap:8px">
-              <button class="btn" style="background:#f3f4f6;border-radius:8px;border:1px solid rgba(15,23,42,0.04)">View</button>
-              <button class="btn" style="background:var(--primary);color:white;border-radius:8px">Buy Now</button>
-            </div>
           </div>
-        `;
-        grid.appendChild(card);
-      });
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-weight:900;color:var(--primary);font-size:20px">₹${item.price}</div>
+              <div style="font-size:12px;color:var(--muted)">${isRent ? 'per day' : (isService ? 'per service' : 'per ' + item.unit)}</div>
+            </div>
+            ${!isRent && !isService ? `<div style="font-size:12px;color:var(--muted)">Available: ${item.quantity} ${item.unit}</div>` : ''}
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button class="btn" onclick="viewDetails(${item.id})" style="flex:1;background:var(--bg);border-radius:8px;border:1px solid var(--border);color:var(--text);padding:10px">View</button>
+            <button class="btn" onclick="purchaseItem(${item.id}, ${isRent})" style="flex:1;background:var(--primary);color:white;border-radius:8px;padding:10px;font-weight:600">${actionText}</button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
     });
   }
 
@@ -364,9 +541,18 @@
       if(!email) return alert('Enter email');
       if(!password) return alert('Enter password');
       
-      // Demo login flow
-      alert(`Login successful as ${role}! Redirecting to home...`);
+      // Save user role and login status
+      localStorage.setItem('userRole', role);
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', email);
+      
+      // Demo login flow - redirect to role-specific page
+      alert(`Login successful as ${role}! Redirecting...`);
+      if(role === 'farmer'){
+        setTimeout(()=> location.href = 'index.html', 1000);
+      } else {
       setTimeout(()=> location.href = 'index.html', 1000);
+      }
     });
     
     // Handle create account button
@@ -585,8 +771,13 @@
         if(password !== reenter) return alert('Passwords do not match');
         if(password.length < 6) return alert('Password must be at least 6 characters');
         
-        // Success
-        alert(`Account created successfully as ${role}! Redirecting to home...`);
+        // Save user role and login status
+        localStorage.setItem('userRole', role);
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', emailPhone);
+        
+        // Success - redirect to role-specific page
+        alert(`Account created successfully as ${role}! Redirecting...`);
         setTimeout(()=>{
           closeCreateAccountModal();
           location.href = 'index.html';

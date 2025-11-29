@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AGRIVOLUTION — Cart</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    (function(){
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand" onclick="location.href='index.html'"><div class="logo-circle">🌱</div><h1>AGRIVOLUTION</h1></div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="customer-shop.html">Shop</a>
+        <a href="orders.html">My Orders</a>
+        <a href="cart.html" class="active">Cart <span id="cart-count" style="background:#2563eb;color:white;border-radius:10px;padding:2px 6px;font-size:11px;margin-left:4px">0</span></a>
+        <a href="wishlist.html">Wishlist</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        <a href="#" onclick="logout()" style="background:transparent;border:1px solid rgba(37,99,235,0.12);padding:8px 12px;border-radius:8px;color:#2563eb">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="max-width:1000px">
+      <h1 style="font-size:36px;margin:0 0 32px;color:var(--text)">Shopping Cart</h1>
+
+      <div class="grid grid-2" style="gap:32px;align-items:start">
+        <!-- Cart Items -->
+        <div>
+          <div id="cart-items">
+            <!-- Cart items will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div>
+          <div class="card" style="position:sticky;top:100px">
+            <h3 style="margin:0 0 20px;color:var(--text)">Order Summary</h3>
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+              <span style="color:var(--muted)">Subtotal</span>
+              <span id="subtotal" style="color:var(--text);font-weight:600">₹0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+              <span style="color:var(--muted)">Delivery</span>
+              <span style="color:var(--text);font-weight:600">₹50</span>
+            </div>
+            <div style="height:1px;background:var(--border);margin:20px 0"></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:24px">
+              <span style="color:var(--text);font-weight:700;font-size:18px">Total</span>
+              <span id="total" style="color:#2563eb;font-weight:700;font-size:24px">₹0</span>
+            </div>
+            <button class="btn btn-primary" onclick="checkout()" style="width:100%;justify-content:center;padding:16px;background:linear-gradient(135deg, #2563eb, #1d4ed8);font-size:16px;font-weight:600">Proceed to Checkout</button>
+            <button class="btn" onclick="location.href='customer-shop.html'" style="width:100%;justify-content:center;padding:12px;margin-top:12px;border:1px solid var(--border);background:transparent;color:var(--text)">Continue Shopping</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-circle">🌱</div>
+            <h2>AGRIVOLUTION</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    function loadCart(){
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const itemsDiv = document.getElementById('cart-items');
+      if(!itemsDiv) return;
+
+      if(cart.length === 0){
+        itemsDiv.innerHTML = `
+          <div class="card" style="text-align:center;padding:48px">
+            <div style="font-size:64px;margin-bottom:16px">🛒</div>
+            <h3 style="color:var(--text);margin:0 0 12px">Your cart is empty</h3>
+            <p style="color:var(--muted);margin:0 0 24px">Add some products to get started</p>
+            <button class="btn btn-primary" onclick="location.href='customer-shop.html'" style="background:linear-gradient(135deg, #2563eb, #1d4ed8)">Start Shopping</button>
+          </div>
+        `;
+        updateSummary(0);
+        updateCartCount();
+        return;
+      }
+
+      itemsDiv.innerHTML = '';
+      cart.forEach(item=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.marginBottom = '16px';
+        card.innerHTML = `
+          <div style="display:flex;gap:16px">
+            <img src="${item.image}" style="width:120px;height:120px;object-fit:cover;border-radius:12px" alt="${item.name}"/>
+            <div style="flex:1">
+              <h3 style="margin:0 0 8px;color:var(--text)">${item.name}</h3>
+              <div style="color:var(--muted);font-size:14px;margin-bottom:12px">₹${item.price} per ${item.unit}</div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <button onclick="updateQuantity(${item.id},-1)" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer">-</button>
+                  <span style="font-weight:600;color:var(--text);min-width:40px;text-align:center">${item.quantity}</span>
+                  <button onclick="updateQuantity(${item.id},1)" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer">+</button>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:20px;font-weight:700;color:#2563eb">₹${item.price * item.quantity}</div>
+                  <button onclick="removeItem(${item.id})" style="margin-top:8px;padding:4px 12px;border-radius:6px;border:none;background:transparent;color:#ef4444;cursor:pointer;font-size:12px">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        itemsDiv.appendChild(card);
+      });
+
+      const subtotal = cart.reduce((sum,item)=>sum+(item.price*item.quantity),0);
+      updateSummary(subtotal);
+      updateCartCount();
+    }
+
+    function updateQuantity(id,change){
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const item = cart.find(i=>i.id===id);
+      if(item){
+        item.quantity += change;
+        if(item.quantity <= 0){
+          cart = cart.filter(i=>i.id!==id);
+        }
+        localStorage.setItem('cart',JSON.stringify(cart));
+        loadCart();
+      }
+    }
+
+    function removeItem(id){
+      if(confirm('Remove this item from cart?')){
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart = cart.filter(i=>i.id!==id);
+        localStorage.setItem('cart',JSON.stringify(cart));
+        loadCart();
+      }
+    }
+
+    function updateSummary(subtotal){
+      document.getElementById('subtotal').textContent = `₹${subtotal}`;
+      document.getElementById('total').textContent = `₹${subtotal + 50}`;
+    }
+
+    function updateCartCount(){
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const count = cart.reduce((sum,item)=>sum+item.quantity,0);
+      const countEl = document.getElementById('cart-count');
+      if(countEl) countEl.textContent = count;
+    }
+
+    function checkout(){
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      if(cart.length === 0){
+        alert('Your cart is empty!');
+        return;
+      }
+      if(confirm('Proceed to checkout?')){
+        alert('Order placed successfully! Redirecting to orders page...');
+        localStorage.removeItem('cart');
+        setTimeout(()=>location.href='orders.html',1000);
+      }
+    }
+
+    loadCart();
+  </script>
+</body>
+</html>
+

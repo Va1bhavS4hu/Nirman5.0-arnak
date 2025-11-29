@@ -34,20 +34,209 @@
   </header>
 
   <main>
-    <!-- hero -->
-    <section class="hero">
-      <img class="hero-bg" src="assets/pexels-clickon38-30851646.jpg" alt="hero"/>
-      <div class="overlay"></div>
-      <div class="container hero-content">
-        <div class="hero-badge"><span style="width:10px;height:10px;background:#34d399;border-radius:999px;display:inline-block"></span> Future of Farming is Here</div>
-        <h2 class="hero-title">Cultivating <span class="accent">Prosperity</span> Together</h2>
-        <p class="hero-lead">Join India's smartest agriculture platform. Connect with buyers, get AI-powered crop advice, and track real-time mandi prices.</p>
-        <div style="display:flex;gap:12px">
-          <button class="btn btn-primary" onclick="location.href='marketplace.html'">Explore Marketplace</button>
-          <button class="btn btn-outline" onclick="location.href='auth.html'">Join Community</button>
+    <!-- Default Landing Page (Before Login) -->
+    <div id="landing-content">
+      <!-- Hero Section -->
+      <section class="hero" style="height:600px">
+        <img class="hero-bg" src="assets/pexels-c-t-phat-546614745-17921805.jpg" alt="hero"/>
+        <div class="overlay"></div>
+        <div class="container hero-content">
+          <div class="hero-badge"><span style="width:10px;height:10px;background:#34d399;border-radius:999px;display:inline-block"></span> Revolutionizing Agriculture in India</div>
+          <h2 class="hero-title">AGRIVOLUTION</h2>
+          <p class="hero-lead">India's most comprehensive agriculture platform connecting farmers and customers. Empowering farmers with technology, community, and direct market access while bringing fresh produce to your doorstep.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+              <button class="btn btn-primary" onclick="location.href='auth-farmer.html'">🌾 I'm a Farmer</button>
+              <button class="btn btn-outline" onclick="location.href='auth-customer.html'">🛒 I'm a Customer</button>
+            </div>
+            <div style="margin-top:12px">
+              <button class="btn" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" style="background:transparent;border:none;color:white;text-decoration:underline;font-size:14px">Learn More</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="section">
+        <div class="container">
+          <div style="text-align:center;margin-bottom:64px">
+            <h2 style="font-size:40px;margin:0 0 16px;color:var(--text);font-weight:700">Why Choose AGRIVOLUTION?</h2>
+            <p style="color:var(--muted);font-size:18px;max-width:700px;margin:0 auto">A platform designed for both farmers and customers, bringing the best of agriculture to everyone</p>
+          </div>
+
+          <div class="grid grid-2" style="gap:48px;margin-bottom:64px;align-items:center">
+            <div>
+              <img src="assets/farmerpng.jpg" alt="Farmer Platform" style="width:100%;border-radius:16px;box-shadow:var(--shadow)"/>
+            </div>
+            <div>
+              <h3 style="font-size:32px;margin:0 0 20px;color:var(--text)">For Farmers</h3>
+              <div style="display:flex;flex-direction:column;gap:20px">
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">🌾 Marketplace</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Sell your produce directly to buyers without middlemen. Get fair prices and expand your market reach.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">👥 Community</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Connect with thousands of farmers, share experiences, ask questions, and learn from each other.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">📚 Learning Hub</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Access comprehensive farming guides, modern techniques, and expert advice to improve your yield.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">🤝 Collab</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Form partnerships, share resources, and collaborate on farming projects with fellow farmers.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">📍 Mandi Locator</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Find the nearest agricultural markets and get real-time price information.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-2" style="gap:48px;margin-bottom:64px;align-items:center">
+            <div>
+              <h3 style="font-size:32px;margin:0 0 20px;color:var(--text)">For Customers</h3>
+              <div style="display:flex;flex-direction:column;gap:20px">
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">🛒 E-Commerce Shop</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Browse and buy fresh agricultural products directly from farmers. Categorized products for easy shopping.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">📦 My Orders</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Track your orders, view order history, and manage deliveries all in one place.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">🛒 Shopping Cart</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Add products to cart, manage quantities, and checkout seamlessly.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">❤️ Wishlist</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Save your favorite products for later and never miss a deal.</p>
+                </div>
+                <div>
+                  <h4 style="margin:0 0 8px;color:var(--text);font-size:20px">🚚 Fast Delivery</h4>
+                  <p style="color:var(--muted);margin:0;line-height:1.6">Fresh produce delivered to your doorstep within 24-48 hours.</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <img src="assets/CUSTOMER_MARKET.png" alt="Customer Market" style="width:100%;border-radius:16px;box-shadow:var(--shadow)"/>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Platform Features -->
+      <section class="section" style="background:linear-gradient(180deg,transparent, rgba(47,142,68,0.02))">
+        <div class="container">
+          <div style="text-align:center;margin-bottom:48px">
+            <h2 style="font-size:36px;margin:0 0 16px;color:var(--text);font-weight:700">Platform Features</h2>
+            <p style="color:var(--muted);font-size:16px">Everything you need for modern agriculture</p>
+          </div>
+
+          <div class="grid grid-3" style="gap:32px;margin-bottom:48px">
+            <div class="card" style="text-align:center;padding:32px">
+              <img src="assets/market.jpg" alt="Marketplace" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:20px"/>
+              <h3 style="margin:0 0 12px;color:var(--text)">Direct Marketplace</h3>
+              <p style="color:var(--muted);margin:0">Connect farmers directly with buyers. No middlemen, fair prices for everyone.</p>
+            </div>
+            <div class="card" style="text-align:center;padding:32px">
+              <img src="assets/farmer_community.jpg" alt="Community" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:20px"/>
+              <h3 style="margin:0 0 12px;color:var(--text)">Farmer Community</h3>
+              <p style="color:var(--muted);margin:0">Join a vibrant community of farmers sharing knowledge, experiences, and support.</p>
+            </div>
+            <div class="card" style="text-align:center;padding:32px">
+              <img src="assets/learnhub.jpg" alt="Learning Hub" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:20px"/>
+              <h3 style="margin:0 0 12px;color:var(--text)">Learning Resources</h3>
+              <p style="color:var(--muted);margin:0">Comprehensive guides, tutorials, and expert advice to improve your farming.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-2" style="gap:32px;align-items:center">
+            <div>
+              <img src="assets/campaign.jpg" alt="Campaign" style="width:100%;border-radius:16px;box-shadow:var(--shadow)"/>
+            </div>
+            <div>
+              <h3 style="font-size:32px;margin:0 0 20px;color:var(--text)">AI-Powered Assistance</h3>
+              <p style="color:var(--muted);margin:0 0 20px;line-height:1.8;font-size:16px">Get instant crop diagnosis, farming tips, and market insights with our AI assistant Arnak. Available 24/7 to help you make informed decisions.</p>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="font-size:24px">✓</span>
+                  <span style="color:var(--text)">Crop disease identification</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="font-size:24px">✓</span>
+                  <span style="color:var(--text)">Real-time market prices</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="font-size:24px">✓</span>
+                  <span style="color:var(--text)">Weather forecasts</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="font-size:24px">✓</span>
+                  <span style="color:var(--text)">Farming best practices</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-4" style="gap:32px;text-align:center">
+            <div>
+              <div style="font-size:48px;font-weight:700;color:var(--primary);margin-bottom:8px">10K+</div>
+              <div style="color:var(--muted);font-size:16px">Active Farmers</div>
+            </div>
+            <div>
+              <div style="font-size:48px;font-weight:700;color:var(--primary);margin-bottom:8px">50K+</div>
+              <div style="color:var(--muted);font-size:16px">Happy Customers</div>
+            </div>
+            <div>
+              <div style="font-size:48px;font-weight:700;color:var(--primary);margin-bottom:8px">1M+</div>
+              <div style="color:var(--muted);font-size:16px">Products Sold</div>
+            </div>
+            <div>
+              <div style="font-size:48px;font-weight:700;color:var(--primary);margin-bottom:8px">500+</div>
+              <div style="color:var(--muted);font-size:16px">Cities Covered</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="section" style="background:linear-gradient(135deg, var(--primary), #2ba14a);color:white;text-align:center">
+        <div class="container">
+          <h2 style="font-size:40px;margin:0 0 20px;color:white">Ready to Get Started?</h2>
+          <p style="font-size:18px;margin:0 0 32px;opacity:0.95;max-width:600px;margin-left:auto;margin-right:auto">Join thousands of farmers and customers already using AGRIVOLUTION to transform agriculture in India.</p>
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+            <button class="btn" onclick="location.href='auth-farmer.html'" style="background:white;color:var(--primary);padding:16px 32px;font-size:16px;font-weight:700">🌾 Farmer Sign Up</button>
+            <button class="btn" onclick="location.href='auth-customer.html'" style="background:white;color:var(--primary);padding:16px 32px;font-size:16px;font-weight:700">🛒 Customer Sign Up</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Farmer Content -->
+    <div id="farmer-content" style="display:none">
+      <!-- hero -->
+      <section class="hero">
+        <img class="hero-bg" src="assets/pexels-clickon38-30851646.jpg" alt="hero"/>
+        <div class="overlay"></div>
+        <div class="container hero-content">
+          <div class="hero-badge"><span style="width:10px;height:10px;background:#34d399;border-radius:999px;display:inline-block"></span> Future of Farming is Here</div>
+          <h2 class="hero-title">Cultivating <span class="accent">Prosperity</span> Together</h2>
+          <p class="hero-lead">Join India's smartest agriculture platform. Connect with buyers, get AI-powered crop advice, and track real-time mandi prices.</p>
+          <div style="display:flex;gap:12px">
+            <button class="btn btn-primary" onclick="location.href='marketplace.html'">Explore Marketplace</button>
+            <button class="btn btn-outline" onclick="location.href='auth.html'">Join Community</button>
+          </div>
+        </div>
+      </section>
 
     <!-- Prices & quick stats -->
     <section class="section">
@@ -101,6 +290,67 @@
         <div id="community-teasers"></div>
       </div>
     </section>
+    </div>
+
+    <!-- Customer Content (E-commerce) -->
+    <div id="customer-content" style="display:none">
+      <!-- Hero Banner -->
+      <section class="hero" style="height:500px">
+        <img class="hero-bg" src="assets/CUSTOMER_MARKET.png" alt="hero"/>
+        <div class="overlay"></div>
+        <div class="container hero-content">
+          <h2 class="hero-title">Fresh from <span class="accent">Farm</span> to Your Door</h2>
+          <p class="hero-lead">Shop the finest agricultural products directly from farmers. Quality guaranteed, prices you'll love.</p>
+          <div style="display:flex;gap:12px">
+            <button class="btn btn-primary" onclick="location.href='customer-shop.html'">Shop Now</button>
+            <button class="btn btn-outline" onclick="location.href='customer-shop.html'">Browse Categories</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories Section -->
+      <section class="section">
+        <div class="container">
+          <h2 style="font-size:32px;margin:0 0 32px;text-align:center;color:var(--text)">Shop by Category</h2>
+          <div class="grid grid-4" id="categories-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px">
+            <!-- Categories will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Products -->
+      <section class="section" style="background:linear-gradient(180deg,transparent, rgba(37,99,235,0.02))">
+        <div class="container">
+          <h2 style="font-size:32px;margin:0 0 32px;color:var(--text)">Featured Products</h2>
+          <div class="grid grid-4" id="featured-products" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px">
+            <!-- Products will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Shop With Us -->
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-3" style="gap:32px">
+            <div class="card" style="text-align:center;padding:32px">
+              <div style="font-size:48px;margin-bottom:16px">🚚</div>
+              <h3 style="margin:0 0 12px;color:var(--text)">Fast Delivery</h3>
+              <p style="color:var(--muted);margin:0">Fresh produce delivered to your doorstep within 24-48 hours</p>
+            </div>
+            <div class="card" style="text-align:center;padding:32px">
+              <div style="font-size:48px;margin-bottom:16px">✓</div>
+              <h3 style="margin:0 0 12px;color:var(--text)">Quality Guaranteed</h3>
+              <p style="color:var(--muted);margin:0">Direct from farmers, quality checked and verified</p>
+            </div>
+            <div class="card" style="text-align:center;padding:32px">
+              <div style="font-size:48px;margin-bottom:16px">💰</div>
+              <h3 style="margin:0 0 12px;color:var(--text)">Best Prices</h3>
+              <p style="color:var(--muted);margin:0">No middlemen, fair prices for both farmers and customers</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer class="footer">
@@ -206,5 +456,65 @@
 
   <script src="js/data.js"></script>
   <script src="js/script.js"></script>
+  <script>
+    // Load customer content
+    document.addEventListener('DOMContentLoaded', function(){
+      const userRole = localStorage.getItem('userRole') || 'farmer';
+      
+      // Load categories for customer
+      if(userRole === 'customer'){
+        const categories = [
+          {name:'Vegetables', icon:'🥬', count:45},
+          {name:'Fruits', icon:'🍎', count:32},
+          {name:'Grains', icon:'🌾', count:28},
+          {name:'Spices', icon:'🌶️', count:18},
+          {name:'Dairy', icon:'🥛', count:15},
+          {name:'Organic', icon:'🌿', count:22}
+        ];
+        const grid = document.getElementById('categories-grid');
+        if(grid){
+          categories.forEach(cat=>{
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.cursor = 'pointer';
+            card.style.textAlign = 'center';
+            card.style.padding = '24px';
+            card.onclick = ()=>location.href='customer-shop.html';
+            card.innerHTML = `
+              <div style="font-size:48px;margin-bottom:12px">${cat.icon}</div>
+              <h3 style="margin:0 0 8px;color:var(--text)">${cat.name}</h3>
+              <p style="color:var(--muted);margin:0;font-size:14px">${cat.count} products</p>
+            `;
+            grid.appendChild(card);
+          });
+        }
+        
+        // Load featured products
+        const products = [
+          {name:'Fresh Tomatoes',price:45,image:'https://images.unsplash.com/photo-1546097488-9e0c4ce4f87e?w=400'},
+          {name:'Sweet Mangoes',price:80,image:'https://images.unsplash.com/photo-1605027990121-c0a3eccf7443?w=400'},
+          {name:'Basmati Rice',price:120,image:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400'},
+          {name:'Organic Ghee',price:600,image:'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400'}
+        ];
+        const productsGrid = document.getElementById('featured-products');
+        if(productsGrid){
+          products.forEach(p=>{
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.cursor = 'pointer';
+            card.onclick = ()=>location.href='customer-shop.html';
+            card.innerHTML = `
+              <div style="height:180px;overflow:hidden;border-radius:12px;margin-bottom:12px">
+                <img src="${p.image}" style="width:100%;height:100%;object-fit:cover" alt="${p.name}"/>
+              </div>
+              <h3 style="margin:0 0 8px;color:var(--text);font-size:16px">${p.name}</h3>
+              <div style="font-size:20px;font-weight:700;color:#2563eb">₹${p.price}</div>
+            `;
+            productsGrid.appendChild(card);
+          });
+        }
+      }
+    });
+  </script>
 </body>
 </html>

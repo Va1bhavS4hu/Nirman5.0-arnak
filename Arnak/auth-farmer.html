@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AGRIVOLUTION — Farmer Login</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    (function(){
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand" onclick="location.href='index.html'"><div class="logo-circle">🌱</div><h1>AGRIVOLUTION</h1></div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="community.html">Community</a>
+        <a href="learning.html">Learning Hub</a>
+        <a href="mandi.html">Mandi Locator</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        <a href="auth-farmer.html" style="background:transparent;border:1px solid rgba(47,142,68,0.12);padding:8px 12px;border-radius:8px;color:var(--primary)">Sign in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="display:flex;align-items:center;justify-content:center;min-height:70vh">
+      <div class="auth-card" id="auth-card" data-role="farmer" style="max-width:500px;width:100%">
+        <div style="text-align:center;margin-bottom:32px">
+          <div class="auth-logo" style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg, #2f8e44, #2ba14a);color:white;font-weight:800;font-size:36px;box-shadow:0 8px 24px rgba(47,142,68,0.3);margin-bottom:20px">🌾</div>
+          <h2 style="margin:0 0 8px;font-size:32px;color:var(--text);font-weight:700">Farmer Login</h2>
+          <div style="color:var(--muted);font-size:15px">Sign in to access farmer dashboard</div>
+        </div>
+
+        <form id="auth-form" style="display:flex;flex-direction:column;gap:18px">
+          <div>
+            <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Email address</label>
+            <input id="auth-email" type="email" placeholder="farmer@example.com" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;transition:all 0.2s ease;box-sizing:border-box"/>
+          </div>
+          <div>
+            <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Password</label>
+            <input id="auth-password" type="password" placeholder="Enter your password" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;transition:all 0.2s ease;box-sizing:border-box"/>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px">
+            <label style="display:flex;align-items:center;gap:8px;color:var(--text);cursor:pointer">
+              <input type="checkbox" style="width:18px;height:18px;cursor:pointer"/>
+              <span>Remember me</span>
+            </label>
+            <a href="#" style="color:#2f8e44;text-decoration:none;font-weight:600">Forgot password?</a>
+          </div>
+          <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center;padding:16px;font-size:16px;margin-top:8px;background:linear-gradient(135deg, #2f8e44, #2ba14a)">Sign In</button>
+
+          <div style="display:flex;align-items:center;gap:12px;margin:16px 0">
+            <div style="flex:1;height:1px;background:var(--border)"></div>
+            <div style="color:var(--muted);font-size:13px">Or continue with</div>
+            <div style="flex:1;height:1px;background:var(--border)"></div>
+          </div>
+          <button class="btn google-btn" type="button" style="border:1px solid var(--border);padding:14px;background:var(--card);color:var(--text);width:100%;justify-content:center;gap:10px;font-size:15px;font-weight:600">
+            <svg width="20" height="20" viewBox="0 0 24 24" style="display:inline-block">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Continue with Google
+          </button>
+
+          <div style="text-align:center;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)">
+            <div style="color:var(--muted);font-size:14px;margin-bottom:12px">Don't have an account?</div>
+            <button type="button" class="btn create-account-btn" onclick="openCreateAccountModal()" style="width:100%;justify-content:center;padding:14px;font-size:15px;font-weight:600;border:2px solid #2f8e44;background:transparent;color:#2f8e44">Create New Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Create Account Modal (same as auth.html but locked to farmer) -->
+  <div id="create-account-modal" class="create-account-modal" style="display:none">
+    <div class="modal-overlay" onclick="closeCreateAccountModal()"></div>
+    <div class="modal-content" id="create-account-card" data-role="farmer">
+      <div class="modal-header">
+        <h2 style="margin:0;font-size:28px;color:var(--text);font-weight:700">Create Farmer Account</h2>
+        <button class="modal-close" onclick="closeCreateAccountModal()">✕</button>
+      </div>
+      <form id="create-account-form" style="display:flex;flex-direction:column;gap:20px;margin-top:24px">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start">
+          <div style="flex:1">
+            <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Name</label>
+            <input id="create-name" type="text" placeholder="Enter your full name" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box"/>
+          </div>
+          <div>
+            <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Photo</label>
+            <div class="photo-upload" style="width:100px;height:100px;border-radius:12px;border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:var(--bg);position:relative;overflow:hidden">
+              <input type="file" id="photo-input" accept="image/*" style="position:absolute;opacity:0;width:100%;height:100%;cursor:pointer"/>
+              <img id="photo-preview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover"/>
+              <div id="photo-placeholder" style="text-align:center;color:var(--muted)"><div style="font-size:24px;margin-bottom:4px">📷</div><div style="font-size:11px">Upload</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Date of Birth</label>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <input id="dob-day" type="number" placeholder="DD" min="1" max="31" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box;text-align:center"/>
+            <input id="dob-month" type="number" placeholder="MM" min="1" max="12" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box;text-align:center"/>
+            <input id="dob-year" type="number" placeholder="YY" min="1900" max="2010" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box;text-align:center"/>
+          </div>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Email / Phone</label>
+          <div style="display:flex;gap:10px">
+            <input id="create-email-phone" type="text" placeholder="Enter email or phone number" required style="flex:1;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box"/>
+            <button type="button" id="send-otp-btn" class="btn otp-send-btn" style="padding:14px 20px;white-space:nowrap;font-size:14px;background:linear-gradient(135deg, #2f8e44, #2ba14a)">Send OTP</button>
+          </div>
+        </div>
+        <div id="otp-section" style="display:none">
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Enter OTP</label>
+          <input id="create-otp" type="text" placeholder="Enter 6-digit OTP" maxlength="6" style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:18px;box-sizing:border-box;text-align:center;letter-spacing:8px;font-weight:600"/>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Create Password</label>
+          <input id="create-password" type="password" placeholder="Enter password" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Re-enter Password</label>
+          <input id="reenter-password" type="password" placeholder="Re-enter password" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box"/>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:8px">
+          <button type="button" class="btn cancel-btn" onclick="closeCreateAccountModal()" style="flex:1;justify-content:center;padding:14px;font-size:15px;font-weight:600;border:2px solid var(--border);background:transparent;color:var(--text)">Cancel</button>
+          <button type="submit" class="btn btn-primary save-btn" style="flex:1;justify-content:center;padding:14px;font-size:15px;font-weight:600;background:linear-gradient(135deg, #2f8e44, #2ba14a)">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-circle">🌱</div>
+            <h2>AGRIVOLUTION</h2>
+          </div>
+          <p class="footer-description">Empowering farmers across India with cutting-edge technology, vibrant community connections, and direct market access.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    // Farmer-specific auth handling
+    document.getElementById('auth-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-password').value;
+      if(!email || !password) return alert('Please fill all fields');
+      
+      // Save to farmer database (localStorage for demo)
+      localStorage.setItem('userRole', 'farmer');
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userType', 'farmer'); // For database management
+      
+      alert('Login successful! Redirecting to farmer dashboard...');
+      setTimeout(()=> location.href = 'index.html', 1000);
+    });
+    
+    // Create account modal functions
+    function openCreateAccountModal(){
+      document.getElementById('create-account-modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCreateAccountModal(){
+      document.getElementById('create-account-modal').style.display = 'none';
+      document.body.style.overflow = '';
+      document.getElementById('create-account-form').reset();
+    }
+    
+    // Photo upload
+    document.getElementById('photo-input').addEventListener('change', function(e){
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = function(e){
+          document.getElementById('photo-preview').src = e.target.result;
+          document.getElementById('photo-preview').style.display = 'block';
+          document.getElementById('photo-placeholder').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // OTP handling
+    document.getElementById('send-otp-btn').addEventListener('click', function(){
+      const email = document.getElementById('create-email-phone').value;
+      if(!email) return alert('Enter email or phone');
+      this.disabled = true;
+      this.textContent = 'Sending...';
+      setTimeout(()=>{
+        this.disabled = false;
+        this.textContent = 'Resend OTP';
+        document.getElementById('otp-section').style.display = 'block';
+        alert('OTP sent! (Demo: Use 123456)');
+      }, 1500);
+    });
+    
+    // Form submission
+    document.getElementById('create-account-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const otp = document.getElementById('create-otp').value;
+      if(otp !== '123456') return alert('Invalid OTP. Use 123456 for demo.');
+      
+      localStorage.setItem('userRole', 'farmer');
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', document.getElementById('create-email-phone').value);
+      localStorage.setItem('userType', 'farmer');
+      
+      alert('Account created! Redirecting...');
+      setTimeout(()=>{
+        closeCreateAccountModal();
+        location.href = 'index.html';
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AGRIVOLUTION — My Orders</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    (function(){
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand" onclick="location.href='index.html'"><div class="logo-circle">🌱</div><h1>AGRIVOLUTION</h1></div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="customer-shop.html">Shop</a>
+        <a href="orders.html" class="active">My Orders</a>
+        <a href="cart.html">Cart <span id="cart-count" style="background:#2563eb;color:white;border-radius:10px;padding:2px 6px;font-size:11px;margin-left:4px">0</span></a>
+        <a href="wishlist.html">Wishlist</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        <a href="#" onclick="logout()" style="background:transparent;border:1px solid rgba(37,99,235,0.12);padding:8px 12px;border-radius:8px;color:#2563eb">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="max-width:1000px">
+      <h1 style="font-size:36px;margin:0 0 32px;color:var(--text)">My Orders</h1>
+
+      <!-- Order Tabs -->
+      <div style="display:flex;gap:12px;margin-bottom:32px;border-bottom:2px solid var(--border)">
+        <button class="order-tab active" data-status="all" style="padding:12px 24px;border:none;background:transparent;color:var(--text);font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s ease">All Orders</button>
+        <button class="order-tab" data-status="pending" style="padding:12px 24px;border:none;background:transparent;color:var(--text);font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s ease">Pending</button>
+        <button class="order-tab" data-status="delivered" style="padding:12px 24px;border:none;background:transparent;color:var(--text);font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s ease">Delivered</button>
+        <button class="order-tab" data-status="cancelled" style="padding:12px 24px;border:none;background:transparent;color:var(--text);font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s ease">Cancelled</button>
+      </div>
+
+      <!-- Orders List -->
+      <div id="orders-list">
+        <!-- Orders will be loaded here -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-circle">🌱</div>
+            <h2>AGRIVOLUTION</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    const orders = [
+      {id:'ORD001',date:'2025-01-15',status:'delivered',items:[{name:'Fresh Tomatoes',qty:2,price:45},{name:'Organic Potatoes',qty:3,price:35}],total:195,deliveryDate:'2025-01-17'},
+      {id:'ORD002',date:'2025-01-18',status:'pending',items:[{name:'Sweet Mangoes',qty:5,price:80},{name:'Fresh Bananas',qty:2,price:40}],total:480,deliveryDate:'2025-01-20'},
+      {id:'ORD003',date:'2025-01-10',status:'delivered',items:[{name:'Basmati Rice',qty:10,price:120},{name:'Wheat Flour',qty:5,price:50}],total:1450,deliveryDate:'2025-01-12'},
+      {id:'ORD004',date:'2025-01-20',status:'cancelled',items:[{name:'Fresh Milk',qty:2,price:60}],total:120,deliveryDate:null}
+    ];
+
+    function renderOrders(status='all'){
+      const list = document.getElementById('orders-list');
+      if(!list) return;
+      list.innerHTML = '';
+      const filtered = status === 'all' ? orders : orders.filter(o=>o.status===status);
+      
+      if(filtered.length === 0){
+        list.innerHTML = '<div class="card" style="text-align:center;padding:48px"><div style="font-size:64px;margin-bottom:16px">📦</div><h3 style="color:var(--text)">No orders found</h3><p style="color:var(--muted)">You haven\'t placed any orders yet</p></div>';
+        return;
+      }
+
+      filtered.forEach(order=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.marginBottom = '24px';
+        const statusColors = {
+          pending: '#f59e0b',
+          delivered: '#10b981',
+          cancelled: '#ef4444'
+        };
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+            <div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                <h3 style="margin:0;color:var(--text)">Order #${order.id}</h3>
+                <span style="padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;background:${statusColors[order.status]}20;color:${statusColors[order.status]}">${order.status.toUpperCase()}</span>
+              </div>
+              <div style="color:var(--muted);font-size:14px">Placed on ${order.date}</div>
+              ${order.deliveryDate ? `<div style="color:var(--muted);font-size:14px;margin-top:4px">Delivered on ${order.deliveryDate}</div>` : ''}
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:24px;font-weight:700;color:var(--text)">₹${order.total}</div>
+            </div>
+          </div>
+          <div>
+            <h4 style="margin:0 0 12px;color:var(--text)">Items:</h4>
+            ${order.items.map(item=>`
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+                <span style="color:var(--text)">${item.name} x ${item.qty}</span>
+                <span style="color:var(--muted)">₹${item.price * item.qty}</span>
+              </div>
+            `).join('')}
+          </div>
+          ${order.status === 'pending' ? `
+            <div style="margin-top:20px;display:flex;gap:12px">
+              <button class="btn" onclick="cancelOrder('${order.id}')" style="flex:1;justify-content:center;padding:12px;border:1px solid var(--border);background:transparent;color:var(--text)">Cancel Order</button>
+              <button class="btn btn-primary" onclick="trackOrder('${order.id}')" style="flex:1;justify-content:center;padding:12px;background:linear-gradient(135deg, #2563eb, #1d4ed8)">Track Order</button>
+            </div>
+          ` : ''}
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function cancelOrder(id){
+      if(confirm('Are you sure you want to cancel this order?')){
+        alert('Order cancelled successfully');
+        renderOrders(document.querySelector('.order-tab.active').dataset.status);
+      }
+    }
+
+    function trackOrder(id){
+      alert(`Tracking order #${id}\nStatus: In transit\nExpected delivery: Tomorrow`);
+    }
+
+    // Tab switching
+    document.querySelectorAll('.order-tab').forEach(tab=>{
+      tab.addEventListener('click',function(){
+        document.querySelectorAll('.order-tab').forEach(t=>{
+          t.classList.remove('active');
+          t.style.borderBottomColor = 'transparent';
+        });
+        this.classList.add('active');
+        this.style.borderBottomColor = '#2563eb';
+        renderOrders(this.dataset.status);
+      });
+    });
+
+    // Initialize
+    renderOrders();
+    
+    function updateCartCount(){
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const count = cart.reduce((sum,item)=>sum+item.quantity,0);
+      const countEl = document.getElementById('cart-count');
+      if(countEl) countEl.textContent = count;
+    }
+    updateCartCount();
+  </script>
+</body>
+</html>
+

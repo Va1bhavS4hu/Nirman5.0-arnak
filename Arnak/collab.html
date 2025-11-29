@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AGRIVOLUTION — Collab</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    (function(){
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand" onclick="location.href='index.html'"><div class="logo-circle">🌱</div><h1>AGRIVOLUTION</h1></div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="community.html">Community</a>
+        <a href="learning.html">Learning Hub</a>
+        <a href="collab.html" class="active">Collab</a>
+        <a href="mandi.html">Mandi Locator</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        <a href="#" onclick="logout()" style="background:transparent;border:1px solid rgba(47,142,68,0.12);padding:8px 12px;border-radius:8px;color:var(--primary)">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:48px">
+        <h1 style="font-size:40px;margin:0 0 16px;color:var(--text);font-weight:700">Collaboration Hub</h1>
+        <p style="color:var(--muted);font-size:18px;max-width:700px;margin:0 auto;line-height:1.6">Connect with other farmers, form partnerships, share resources, and collaborate on farming projects.</p>
+      </div>
+
+      <!-- Collaboration Options -->
+      <div class="grid grid-3" style="margin-bottom:48px;gap:24px">
+        <div class="card" style="text-align:center;padding:32px;cursor:pointer;transition:all 0.3s ease" onclick="openCollabModal('partnership')">
+          <div style="font-size:64px;margin-bottom:16px">🤝</div>
+          <h3 style="margin:0 0 12px;color:var(--text)">Form Partnerships</h3>
+          <p style="color:var(--muted);margin:0">Find farming partners for joint ventures and shared resources</p>
+        </div>
+        <div class="card" style="text-align:center;padding:32px;cursor:pointer;transition:all 0.3s ease" onclick="openCollabModal('resource')">
+          <div style="font-size:64px;margin-bottom:16px">🔄</div>
+          <h3 style="margin:0 0 12px;color:var(--text)">Share Resources</h3>
+          <p style="color:var(--muted);margin:0">Share equipment, tools, and farming resources with others</p>
+        </div>
+        <div class="card" style="text-align:center;padding:32px;cursor:pointer;transition:all 0.3s ease" onclick="openCollabModal('project')">
+          <div style="font-size:64px;margin-bottom:16px">🌾</div>
+          <h3 style="margin:0 0 12px;color:var(--text)">Joint Projects</h3>
+          <p style="color:var(--muted);margin:0">Collaborate on farming projects and initiatives</p>
+        </div>
+      </div>
+
+      <!-- Active Collaborations -->
+      <div>
+        <h2 style="font-size:28px;margin:0 0 24px;color:var(--text)">Active Collaborations</h2>
+        <div id="collab-list" class="grid grid-2" style="gap:24px">
+          <!-- Collaborations will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Collab Modal -->
+  <div id="collab-modal" class="create-account-modal" style="display:none">
+    <div class="modal-overlay" onclick="closeCollabModal()"></div>
+    <div class="modal-content" style="max-width:600px">
+      <div class="modal-header">
+        <h2 id="collab-modal-title" style="margin:0;font-size:24px;color:var(--text)">Start Collaboration</h2>
+        <button class="modal-close" onclick="closeCollabModal()">✕</button>
+      </div>
+      <form id="collab-form" style="display:flex;flex-direction:column;gap:20px;margin-top:24px">
+        <div>
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Title</label>
+          <input id="collab-title" type="text" placeholder="Enter collaboration title" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Description</label>
+          <textarea id="collab-desc" placeholder="Describe your collaboration needs..." required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;min-height:120px;resize:vertical;box-sizing:border-box"></textarea>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:14px;color:var(--text);display:block;margin-bottom:10px">Location</label>
+          <input id="collab-location" type="text" placeholder="Enter your location" required style="width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;box-sizing:border-box"/>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button type="button" class="btn cancel-btn" onclick="closeCollabModal()" style="flex:1;justify-content:center;padding:14px">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;padding:14px">Create Collaboration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-circle">🌱</div>
+            <h2>AGRIVOLUTION</h2>
+          </div>
+          <p class="footer-description">Empowering farmers across India with cutting-edge technology, vibrant community connections, and direct market access.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 class="footer-heading">Platform</h4>
+            <ul class="footer-list">
+              <li><a href="marketplace.html">Marketplace</a></li>
+              <li><a href="community.html">Community</a></li>
+              <li><a href="learning.html">Learning Hub</a></li>
+              <li><a href="collab.html">Collab</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    function openCollabModal(type){
+      const modal = document.getElementById('collab-modal');
+      const title = document.getElementById('collab-modal-title');
+      if(modal){
+        if(type === 'partnership') title.textContent = 'Form Partnership';
+        else if(type === 'resource') title.textContent = 'Share Resources';
+        else if(type === 'project') title.textContent = 'Start Joint Project';
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeCollabModal(){
+      const modal = document.getElementById('collab-modal');
+      if(modal){
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        document.getElementById('collab-form').reset();
+      }
+    }
+    document.getElementById('collab-form').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      alert('Collaboration request created! Other farmers will be able to see and join.');
+      closeCollabModal();
+    });
+    
+    // Load collaborations
+    const collabList = document.getElementById('collab-list');
+    if(collabList){
+      const collabs = [
+        {title:'Organic Wheat Farming Partnership', desc:'Looking for partners in organic wheat cultivation', location:'Punjab', type:'partnership'},
+        {title:'Shared Tractor Usage', desc:'Share tractor and farming equipment', location:'Haryana', type:'resource'},
+        {title:'Community Garden Project', desc:'Joint project for community vegetable garden', location:'Maharashtra', type:'project'}
+      ];
+      collabs.forEach(c=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h3 style="margin:0 0 12px;color:var(--text)">${c.title}</h3>
+          <p style="color:var(--muted);margin:0 0 12px">${c.desc}</p>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="color:var(--muted);font-size:14px">📍 ${c.location}</span>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:14px">Join</button>
+          </div>
+        `;
+        collabList.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
+
